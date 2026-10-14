@@ -338,8 +338,21 @@ function glslFlow() {
 
 // ★★★★★★ 第 4 步 开始 / STEP 4 START：armOpenness（把整个函数换成 Qwen 写的版本 / replace the whole function with Qwen's version）★★★★★★
 function armOpenness(pose) {
-  // 临时版本：永远是一半 / placeholder: always half
-  return 0.5;
+  let ls = pose[11];
+  let rs = pose[12];
+  let lw = pose[15];
+  let rw = pose[16];
+
+  // 肩膀或手腕有任何一个看不见时，返回 0
+  if (!isVisible(ls) || !isVisible(rs) || !isVisible(lw) || !isVisible(rw)) {
+    return 0;
+  }
+
+  // 计算肩宽，避免分母为 0
+  let shoulders = max(dist(ls.x, ls.y, rs.x, rs.y), 1);
+
+  // 根据双手距离计算张开度，并限制在 0 到 1 之间
+  return constrain(dist(lw.x, lw.y, rw.x, rw.y) / (shoulders * 3), 0, 1);
 }
 // ★★★★★★ 第 4 步 结束 / STEP 4 END ★★★★★★
 
