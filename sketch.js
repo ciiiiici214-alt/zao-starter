@@ -292,10 +292,14 @@ function draw() {
 
 // ★★★★★★ 第 1 步 开始 / STEP 1 START：splat（把整个函数换成 Qwen 写的版本 / replace the whole function with Qwen's version）★★★★★★
 function splat(x, y, r, col) {
-  // 临时版本：一个小小的实心圆 / placeholder: a small solid circle
+  // 画一团柔软的颜料：6 个一个比一个大、几乎透明的圆叠在一起，中间浓、边缘柔和
   noStroke();
-  fill(col);
-  circle(x, y, r * 0.5);
+  for (let i = 6; i >= 1; i--) {
+    let c = color(col);
+    c.setAlpha(22);
+    fill(c);
+    circle(x, y, (r * i) / 3);
+  }
 }
 // ★★★★★★ 第 1 步 结束 / STEP 1 END ★★★★★★
 
